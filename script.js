@@ -120,6 +120,7 @@ const sortable = new Sortable.default(containers, {
   mirror: {
     constrainDimensions: true,
   },
+  handle: '.task-point'
   // delay: 50,
 });
 
@@ -162,7 +163,7 @@ function renderTodo(data) {
     todoStr[item.category] += `<li class="box box--isDraggable" data-id=${item.data.id}>
           <div class="flex items-center">
             <input class="task-done hover:border-green-500 mr-2 ${item.data.done && 'checked'}" type="checkbox" id=${item.data.id}>
-            <label class="task-text cursor-pointer" for="${item.data.id}">${item.data.title}</label>
+            <label class="task-text cursor-pointer" for="${item.data.id}"><p class='task-point'>${item.data.title}</p></label>
           </div>
           <div class="text-base text-gray-200 hover:text-orange-700 cursor-pointer"><span class="task-del-js fas fa-times pl-2" data-id=${item.data.id}></span></div>
         </li>`;
