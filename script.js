@@ -6,6 +6,7 @@ const important = document.querySelector('.stacked-list-js.important');
 const normal = document.querySelector('.stacked-list-js.normal');
 
 const containers = document.querySelectorAll('#multiple-containers-js .stacked-list-js');
+console.log(containers);
 const stackedListJs = document.querySelector('#multiple-containers-js');
 const addTodoBtn = document.querySelector('.addTodoBtn-js');
 const form = document.getElementById('form');
@@ -112,7 +113,7 @@ let todoData = [
 
 const Classes = {
   draggable: 'StackedListItem--isDraggable',
-  // capacity: 'draggable-container-parent--capacity',
+  capacity: 'draggable-container-parent--capacity',
 };
 
 const sortable = new Sortable.default(containers, {
@@ -124,27 +125,40 @@ const sortable = new Sortable.default(containers, {
   // delay: 50,
 });
 
-sortable.on('draggable:start', (evt) => {
+sortable.on('sortable:start', (evt) => {
   currentMediumChildren = sortable.getDraggableElementsForContainer(sortable.containers[1])
     .length;
-  capacityReached = currentMediumChildren === containerTwoCapacity;
+  // console.log(currentMediumChildren);
+  // capacityReached = currentMediumChildren === containerTwoCapacity;
   lastOverContainer = evt.sourceContainer;
-  containerTwoParent.classList.toggle(Classes.capacity, capacityReached);
+  // containerTwoParent.classList.toggle(Classes.capacity, capacityReached);
+
+  // 取得對應的 limitCapacity
+  isUrgentLimit = urgent.childElementCount === limitCapacity.urgent;
+  isImportantLimit = important.childElementCount === limitCapacity.important;
 });
 
-sortable.on('draggable:sort', (evt) => {
-  if (!capacityReached) {
-    return;
-  }
+sortable.on('sortable:sort', (evt) => {
+  // 抓到 capacity 用來判斷事件所在的位置
+  let target = evt.overContainer.dataset.category
 
-  const sourceIsCapacityContainer = evt.dragEvent.sourceContainer === sortable.containers[1];
-
-  if (!sourceIsCapacityContainer && evt.dragEvent.overContainer === sortable.containers[1]) {
+  // 設定當該 list 到達存放限制，就不可再放入
+  if (target === 'urgent' && isUrgentLimit) {
+    console.log('isUrgentLimit');
+    evt.cancel();
+  }  else if (target === 'important' && isImportantLimit) {
+    console.log('isImportantLimit');
     evt.cancel();
   }
+
+  // const sourceIsCapacityContainer = evt.dragEvent.sourceContainer === sortable.containers[1];
+
+  // if (!sourceIsCapacityContainer && evt.dragEvent.overContainer === sortable.containers[1]) {
+  //   evt.cancel();
+  // }
 });
 
-sortable.on('draggable:sorted', (evt) => {
+sortable.on('sortable:sorted', (evt) => {
   if (lastOverContainer === evt.dragEvent.overContainer) {
     return;
   }
