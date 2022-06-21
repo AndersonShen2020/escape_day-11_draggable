@@ -6,7 +6,6 @@ const important = document.querySelector('.stacked-list-js.important');
 const normal = document.querySelector('.stacked-list-js.normal');
 
 const containers = document.querySelectorAll('#multiple-containers-js .stacked-list-js');
-console.log(containers);
 const stackedListJs = document.querySelector('#multiple-containers-js');
 const addTodoBtn = document.querySelector('.addTodoBtn-js');
 const form = document.getElementById('form');
@@ -124,7 +123,6 @@ const sortable = new Sortable.default(containers, {
     constrainDimensions: true,
   },
   handle: '.task-point'
-  // delay: 50,
 });
 
 // 開始抓取
@@ -147,12 +145,6 @@ sortable.on('sortable:sort', (evt) => {
   }  else if (target === 'important' && isImportantLimit) {
     evt.cancel();
   }
-
-  // const sourceIsCapacityContainer = evt.dragEvent.sourceContainer === sortable.containers[1];
-
-  // if (!sourceIsCapacityContainer && evt.dragEvent.overContainer === sortable.containers[1]) {
-  //   evt.cancel();
-  // }
 });
 
 // 元件放下，移動結束
