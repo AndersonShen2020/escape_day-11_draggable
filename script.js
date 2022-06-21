@@ -26,7 +26,7 @@ let dragAfterIndex;
 let dragIndex;
 
 // ====== Data ======
-let todoData = [
+let defaultData = [
   {
     category: 'urgent',
     data: {
@@ -109,6 +109,8 @@ let todoData = [
   },
 ];
 
+let todoData = JSON.parse(localStorage.getItem('todoData'))|| defaultData;
+
 // ====== draggable ======
 
 const Classes = {
@@ -125,29 +127,24 @@ const sortable = new Sortable.default(containers, {
   // delay: 50,
 });
 
+// 開始抓取
 sortable.on('sortable:start', (evt) => {
-  currentMediumChildren = sortable.getDraggableElementsForContainer(sortable.containers[1])
-    .length;
-  // console.log(currentMediumChildren);
-  // capacityReached = currentMediumChildren === containerTwoCapacity;
   lastOverContainer = evt.sourceContainer;
-  // containerTwoParent.classList.toggle(Classes.capacity, capacityReached);
 
   // 取得對應的 limitCapacity
   isUrgentLimit = urgent.childElementCount === limitCapacity.urgent;
   isImportantLimit = important.childElementCount === limitCapacity.important;
 });
 
+// 移動途中
 sortable.on('sortable:sort', (evt) => {
   // 抓到 capacity 用來判斷事件所在的位置
   let target = evt.overContainer.dataset.category
 
   // 設定當該 list 到達存放限制，就不可再放入
   if (target === 'urgent' && isUrgentLimit) {
-    console.log('isUrgentLimit');
     evt.cancel();
   }  else if (target === 'important' && isImportantLimit) {
-    console.log('isImportantLimit');
     evt.cancel();
   }
 
@@ -158,12 +155,21 @@ sortable.on('sortable:sort', (evt) => {
   // }
 });
 
+// 元件放下，移動結束
+// 要寫入時必須轉換元件的 category
 sortable.on('sortable:sorted', (evt) => {
-  if (lastOverContainer === evt.dragEvent.overContainer) {
-    return;
-  }
+  // 取得項目的新種類
+  const updateCategory = evt.newContainer.dataset.category;
+  console.log(updateCategory);
+  
+   // 取得拖曳的項目加入對應的區塊內
+   const id = evt.data.dragEvent.data.source.dataset.id;
+  const idx = todoData.findIndex((item) => item.data.id == id);
+   // 更改種類
+   todoData[idx].category = updateCategory;
 
-  lastOverContainer = evt.dragEvent.overContainer;
+  // 寫入 localStorage
+  localStorage.setItem('todoData', JSON.stringify(todoData));
 });
 
 // ====== function ======
@@ -190,6 +196,8 @@ function renderTodo(data) {
 function doneToggle(id) {
   let index = todoData.findIndex(item => item.data.id == id);
   todoData[index].data.done = !todoData[index].data.done;
+  // 寫入 localStorage
+  localStorage.setItem('todoData', JSON.stringify(todoData));
 }
 
 function addTodo(title) {
@@ -201,12 +209,16 @@ function addTodo(title) {
       done: false,
     }
   });
+  // 寫入 localStorage
+  localStorage.setItem('todoData', JSON.stringify(todoData));
   renderTodo(todoData);
 }
 
 function delTodo(id) {
   let index = todoData.findIndex(item => item.data.id == id);
   todoData.splice(index, 1);
+  // 寫入 localStorage
+  localStorage.setItem('todoData', JSON.stringify(todoData));
   renderTodo(todoData);
 }
 
