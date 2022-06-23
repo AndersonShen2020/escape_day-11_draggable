@@ -52,6 +52,14 @@ li + li {
   opacity: 0.3;
 }
 
+.draggable-source--is-dragging {
+  background-color: currentColor;
+  color:white;
+  opacity: 0.5;
+}
+
+
+
 form input {
   border: 2px solid #e5e7eb;
   border-radius: 0.5rem;

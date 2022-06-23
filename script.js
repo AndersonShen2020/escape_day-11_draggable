@@ -186,9 +186,7 @@ function renderTodo(data) {
             <input class="task-done hover:border-green-500 mr-2 ${
               item.data.done && "checked"
             }" type="checkbox" id=${item.data.id}>
-            <label class="task-text cursor-pointer" for="${item.data.id}"><p class='task-point'>${
-      item.data.title
-    }</p></label>
+            <label class="task-text cursor-pointer" for="${item.data.id}">${item.data.title}</label>
           </div>
           <div class="text-base text-gray-200 hover:text-orange-700 cursor-pointer"><span class="task-del-js fas fa-times pl-2" data-id=${
             item.data.id
