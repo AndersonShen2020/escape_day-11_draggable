@@ -94,3 +94,7 @@ form input {
 .task-done.checked + .task-text {
   text-decoration: line-through;
 }
+
+.stacked-list-js {
+  min-height: calc(100% - 64px);
+}
