@@ -122,7 +122,7 @@ const sortable = new Sortable.default(containers, {
   mirror: {
     constrainDimensions: true,
   },
-  handle: ".task-point",
+  // handle: ".task-point",
 });
 
 // 開始抓取
@@ -132,6 +132,15 @@ sortable.on("sortable:start", (evt) => {
   // 取得對應的 limitCapacity
   isUrgentLimit = urgent.childElementCount === limitCapacity.urgent;
   isImportantLimit = important.childElementCount === limitCapacity.important;
+  
+  // 當點擊確認或刪除時，取消拖曳的動作
+  const sensorTarget = evt.data.dragEvent.data.sensorEvent.data.target;
+  const targetDone = sensorTarget.classList.contains("task-done");
+  const targetText = sensorTarget.classList.contains("task-text");
+  const targetDel = sensorTarget.classList.contains("task-del-js");
+  if (targetDone || targetDel || targetText) {
+    evt.cancel();
+  }
 });
 
 // 移動途中
