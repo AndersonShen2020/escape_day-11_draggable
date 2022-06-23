@@ -146,7 +146,12 @@ sortable.on("sortable:start", (evt) => {
 // 移動途中
 sortable.on("sortable:sort", (evt) => {
   // 抓到 capacity 用來判斷事件所在的位置
-  let target = evt.overContainer.dataset.category;
+  const target = evt.overContainer.dataset.category;
+
+  // const targetMirror = document.querySelector('.draggable-mirror');
+  // targetMirror.querySelector('.item-center');
+  // targetMirror.style.color = 'rgb(255,255,255)';
+  // console.log(targetMirror.style);
 
   // 設定當該 list 到達存放限制，就不可再放入
   if (target === "urgent" && isUrgentLimit) {

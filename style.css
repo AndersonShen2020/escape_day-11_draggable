@@ -47,6 +47,10 @@ li + li {
   z-index: 10;
 }
 
+.draggable-mirror .task-text {
+  color: black;
+}
+
 .draggable-source {
   color: currentColor;
   opacity: 0.3;
@@ -54,7 +58,7 @@ li + li {
 
 .draggable-source--is-dragging {
   background-color: currentColor;
-  color:white;
+  color: white;
   opacity: 0.5;
 }
 
